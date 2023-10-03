@@ -1,8 +1,12 @@
 package bookcatalog.mappers
 
+import bookcatalog.dao.AuthorDAO
 import bookcatalog.dtos.AuthorDTO
-import bookcatalog.models.Author
+import bookcatalog.dtos.EditAuthorDTO
 
-fun Author.toDTO() = AuthorDTO(id, name, birthDate)
+fun AuthorDAO.toDTO() = AuthorDTO(id.value, name, birthDate)
 
-fun AuthorDTO.toDomain() = Author(id, name, birthDate)
+fun EditAuthorDTO.updateDAO(dao: AuthorDAO) {
+    dao.name = name
+    dao.birthDate = birthDate
+}

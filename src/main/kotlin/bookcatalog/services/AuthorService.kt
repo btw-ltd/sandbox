@@ -1,29 +1,36 @@
 package bookcatalog.services
 
-import bookcatalog.models.Author
-import java.time.LocalDate
-import java.util.UUID
+import bookcatalog.dao.AuthorDAO
+import bookcatalog.domain.TAuthors
+import bookcatalog.dtos.EditAuthorDTO
+import bookcatalog.mappers.updateDAO
+import org.jetbrains.exposed.sql.lowerCase
+import org.jetbrains.exposed.sql.transactions.transaction
+import java.util.*
 
 class AuthorService {
 
-    private val authors = HashMap<UUID, Author>().apply {
-        Author(UUID.randomUUID(), "J. R. R. Tolkien", LocalDate.of(1892, 1, 3)).let { put(it.id, it) }
-        Author(UUID.randomUUID(), "Stephen Edwin King", LocalDate.of(1947, 9, 21)).let { put(it.id, it) }
+    fun create(dto: EditAuthorDTO) = transaction {
+        AuthorDAO.new(dto::updateDAO).id.value
     }
 
-    fun create(name: String, birthDate: LocalDate) = UUID.randomUUID().also {
-        authors[it] = Author(it, name, birthDate)
+    fun list() = transaction {
+        AuthorDAO.all().toList()
     }
 
-    fun list() = authors.values.toList()
+    fun findById(id: UUID) = transaction {
+        AuthorDAO.findById(id)
+    }
 
-    fun findById(id: UUID) = authors[id]
-
-    fun findByName(name: String) = authors.values.firstOrNull {
-        it.name.contains(name, true)
+    fun findByName(name: String) = transaction {
+        AuthorDAO.find {
+            TAuthors.name.lowerCase().like("%${name.lowercase()}%")
+        }.toList()
     }
 
     fun delete(id: UUID) {
-        authors.remove(id)
+        transaction {
+            findById(id)?.delete()
+        }
     }
 }

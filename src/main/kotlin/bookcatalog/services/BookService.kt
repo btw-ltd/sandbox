@@ -1,31 +1,20 @@
 package bookcatalog.services
 
-import bookcatalog.models.Author
-import bookcatalog.models.Book
-import java.time.LocalDate
-import java.util.UUID
+import bookcatalog.dao.BookDAO
+import bookcatalog.domain.TAuthors
+import bookcatalog.domain.TBooks
+import bookcatalog.mappers.toDTO
+import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.transactions.transaction
+import java.util.*
 
 class BookService {
 
-    private val books = HashMap<UUID, Book>()
-
-    fun create(title: String, author: Author, synopsis: String) = UUID.randomUUID().also {
-        books[it] = Book(it, title, author, synopsis)
+    fun getTitle(id: UUID) = transaction {
+        (TBooks innerJoin TAuthors).slice(TAuthors.name).select { TBooks.id eq id }.singleOrNull()?.get(TBooks.title)
     }
 
-    fun list() = books.values.toList()
-
-    fun findById(id: UUID) = books[id]
-
-    fun findByTitle(title: String) = books.values.firstOrNull {
-        it.title.contains(title, true)
-    }
-
-    fun addTag(id: UUID, tag: String) {
-        findById(id)?.tags?.add(tag)
-    }
-
-    fun delete(id: UUID) {
-        books.remove(id)
+    fun findById(id: UUID) = transaction {
+        BookDAO.findById(id)?.toDTO()
     }
 }

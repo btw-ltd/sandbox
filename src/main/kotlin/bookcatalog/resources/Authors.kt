@@ -5,19 +5,15 @@ package bookcatalog.resources
 import io.ktor.resources.*
 import kotlinx.serialization.UseSerializers
 import util.SortOrder
-import util.UUIDSerializer
+import serialization.UUIDSerializer
 import java.util.UUID
 
 @Resource("/authors")
 class Authors(val order: SortOrder? = SortOrder.ASC) {
 
-    @Resource("add")
-    class Add(val parent: Authors = Authors())
-
     @Resource("{id}")
-    class Id(val parent: Authors = Authors(), val id: UUID) {
+    class Id(val parent: Authors, val id: UUID)
 
-        @Resource("edit")
-        class Edit(val parent: Id)
-    }
+    @Resource("/search")
+    class Search(val parent: Authors, val name: String?)
 }

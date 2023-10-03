@@ -2,6 +2,9 @@ val ktor_version = "2.3.4"
 val logback_version = "1.4.11"
 val koin_version = "3.5.0"
 val koin_ktor_version = "3.5.1"
+val exposedVersion = "0.44.0"
+val h2_version = "2.1.214"
+val kotlinxSerializationVersion = "1.6.0"
 
 plugins {
     kotlin("jvm") version "1.9.0"
@@ -30,6 +33,15 @@ dependencies {
     implementation("io.ktor:ktor-server-content-negotiation:$ktor_version")
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
     implementation("io.ktor:ktor-server-resources:$ktor_version")
+
+    implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-java-time:$exposedVersion")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinxSerializationVersion")
+
+    implementation("com.h2database:h2:$h2_version")
 }
 
 tasks.test {

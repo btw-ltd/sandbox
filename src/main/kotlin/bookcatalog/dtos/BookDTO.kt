@@ -1,5 +1,10 @@
+@file:UseContextualSerialization(UUID::class)
+
 package bookcatalog.dtos
 
-import java.util.UUID
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.UseContextualSerialization
+import java.util.*
 
-data class BookDTO(val id: UUID, val title: String, val author: AuthorDTO, val synopsis: String, val tags: Set<String>)
+@Serializable
+data class BookDTO(val id: UUID, val title: String, val author: AuthorDTO, val synopsis: String, val tags: Set<String> = emptySet())
