@@ -1,6 +1,7 @@
 package bookcatalog.dao
 
 import bookcatalog.domain.TBooks
+import bookcatalog.domain.TCustomerFavouriteBooks
 import org.jetbrains.exposed.dao.UUIDEntity
 import org.jetbrains.exposed.dao.UUIDEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
@@ -12,4 +13,6 @@ class BookDAO(id: EntityID<UUID>) : UUIDEntity(id) {
     var title by TBooks.title
     var author by AuthorDAO referencedOn TBooks.authorId
     var synopsis by TBooks.synopsis
+
+    var customersLovingThisBook by CustomerDAO via TCustomerFavouriteBooks
 }

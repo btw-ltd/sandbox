@@ -14,6 +14,10 @@ class AuthorService {
         AuthorDAO.new(dto::updateDAO).id.value
     }
 
+    fun update(id: UUID, dto: EditAuthorDTO) = transaction {
+        AuthorDAO.findById(id)?.also(dto::updateDAO)
+    }
+
     fun list() = transaction {
         AuthorDAO.all().toList()
     }
@@ -28,9 +32,9 @@ class AuthorService {
         }.toList()
     }
 
-    fun delete(id: UUID) {
-        transaction {
-            findById(id)?.delete()
+    fun delete(id: UUID) = transaction {
+        findById(id)?.apply {
+            delete()
         }
-    }
+    } != null
 }

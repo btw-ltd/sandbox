@@ -9,7 +9,10 @@ import serialization.UUIDSerializer
 import java.util.UUID
 
 @Resource("/authors")
-class Authors(val order: SortOrder? = SortOrder.ASC) {
+class Authors() {
+
+    @Resource("")
+    class List(val parent: Authors, val order: SortOrder? = SortOrder.ASC)
 
     @Resource("{id}")
     class Id(val parent: Authors, val id: UUID)

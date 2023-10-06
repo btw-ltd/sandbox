@@ -2,6 +2,7 @@ package bookcatalog
 
 import bookcatalog.routes.authorRoutes
 import bookcatalog.routes.bookRoutes
+import bookcatalog.routes.customerRoutes
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
 import org.koin.ktor.plugin.koin
@@ -15,5 +16,6 @@ fun Application.module() {
     routing {
         authorRoutes()
         bookRoutes()
+        customerRoutes()
     }
 }
